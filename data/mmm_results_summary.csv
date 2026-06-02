@@ -1,0 +1,16 @@
+section,metric,value
+Model Quality,Holdout MAPE (%),80.32
+Model Quality,Holdout WAPE (%),52.51
+Model Quality,Holdout R²,0.5913
+Model Quality,R-hat (max),
+Attribution,Google purchases (attr.),2127.1
+Attribution,Meta purchases (attr.),2159.5
+Attribution,Google share (%),10.1
+Attribution,Meta share (%),10.26
+Attribution,Google ROAS (purch/$),0.01333
+Attribution,Meta ROAS (purch/$),0.04396
+Optimisation,Current Google spend ($),159601.0
+Optimisation,Current Meta spend ($),49123.0
+Optimisation,Optimal Google spend ($),110478.0
+Optimisation,Optimal Meta spend ($),98246.0
+Optimisation,Optimisation lift (%),30.81
