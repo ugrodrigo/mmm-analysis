@@ -1,4 +1,4 @@
-# Marketing Mix Modeling (MMM) — Bayesian Attribution & Budget Optimization
+# Marketing Mix Modeling (MMM) Bayesian Attribution & Budget Optimization
 
 A full end-to-end **Bayesian Marketing Mix Model** built from scratch in Python, applied to a real eCommerce brand in the Beauty & Fitness / Hair Care vertical (US market). The project demonstrates how to quantify the incremental contribution of paid media channels to sales and use that to recommend a data-driven budget allocation.
 
@@ -6,7 +6,7 @@ A full end-to-end **Bayesian Marketing Mix Model** built from scratch in Python,
 
 ## What is Marketing Mix Modeling?
 
-Marketing Mix Modeling is a statistical technique used by marketing teams to measure the effectiveness of each advertising channel (Google, Meta, TV, etc.) on business outcomes. Unlike last-click attribution, MMM accounts for lagged effects, diminishing returns, and organic demand — making it a more accurate foundation for budget decisions.
+Marketing Mix Modeling is a statistical technique used by marketing teams to measure the effectiveness of each advertising channel (Google, Meta, TV, etc.) on business outcomes. Unlike last-click attribution, MMM accounts for lagged effects, diminishing returns, and organic demand, making it a more accurate foundation for budget decisions.
 
 ---
 
@@ -20,7 +20,7 @@ Marketing Mix Modeling is a statistical technique used by marketing teams to mea
 | Meta ROAS | 0.044 purchases / $ |
 | Budget reallocation lift | **+31%** in channel-attributable purchases |
 
-**Key finding:** Meta is ~3.3× more efficient per dollar than Google in this period. Shifting from a 77%/23% to a 53%/47% Google/Meta split — with the same total budget — is projected to yield a 31% increase in paid-media-driven purchases.
+**Key finding:** Meta is ~3.3× more efficient per dollar than Google in this period. Shifting from a 77%/23% to a 53%/47% Google/Meta split, with the same total budget, is projected to yield a 31% increase in paid-media-driven purchases.
 
 ---
 
@@ -29,7 +29,7 @@ Marketing Mix Modeling is a statistical technique used by marketing teams to mea
 | Layer | Tools |
 |---|---|
 | Bayesian inference | [PyMC-Marketing](https://www.pymc-marketing.io/) v0.19.4 · PyMC · ArviZ |
-| Sampling backend | **numpyro (JAX/XLA)** — reduces MCMC from hours to ~50 s on CPU |
+| Sampling backend | **numpyro (JAX/XLA)**, reduces MCMC from hours to ~50 s on CPU |
 | Adstock | Geometric decay (`l_max = 14 days`) |
 | Saturation | Logistic saturation |
 | Optimization | `scipy.optimize.minimize` (SLSQP) |
@@ -69,12 +69,12 @@ mmm-analysis/
 - Aggregated Google and Meta spend across sub-channels
 - Engineered temporal features (day-of-week, holidays, yearly seasonality)
 - Applied max-normalisation to paid channels (critical for identifiable saturation priors)
-- 80/20 chronological train/holdout split — no random shuffling to respect time order
+- 80/20 chronological train/holdout split, no random shuffling to respect time order
 
 ### Phase 2 — Bayesian Model Training
 - Built a hierarchical model using `pymc-marketing.MMM` with:
-  - **Geometric adstock** — captures carry-over effects up to 14 days after exposure
-  - **Logistic saturation** — models diminishing returns on spend
+  - **Geometric adstock**, captures carry-over effects up to 14 days after exposure
+  - **Logistic saturation**, models diminishing returns on spend
   - 8 organic traffic controls (direct, branded search, organic search, email, referral, etc.)
 - Sampled with **4 chains × 500 draws** using the numpyro NUTS sampler (JAX backend)
 - Convergence diagnostics: max R-hat **1.006**, ESS > 1000, **0 divergences**
@@ -98,11 +98,11 @@ mmm-analysis/
 
 ## Project Blueprint
 
-The full planning document — dataset schema, modelling decisions, tradeoffs, and what changed during implementation — is in [mmm-project-plan.md](mmm-project-plan.md).
+The full planning document, dataset schema, modelling decisions, tradeoffs, and what changed during implementation is in [mmm-project-plan.md](mmm-project-plan.md).
 
 ---
 
 ## Dataset
 
-Source: [Multi-Region MMM Dataset for Several eCommerce Brands](https://figshare.com/articles/dataset/Multi-Region_Marketing_Mix_Modeling_MMM_Dataset_for_Several_eCommerce_Brands/25314841) — published on figshare.
+Source: [Multi-Region MMM Dataset for Several eCommerce Brands](https://figshare.com/articles/dataset/Multi-Region_Marketing_Mix_Modeling_MMM_Dataset_for_Several_eCommerce_Brands/25314841), published on figshare.
 
