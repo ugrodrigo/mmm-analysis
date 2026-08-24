@@ -128,7 +128,9 @@ def add_holiday_flags(df: pd.DataFrame, country: str = "US") -> pd.DataFrame:
     df = df.copy()
     years = df["date_day"].dt.year.unique().tolist()
     country_holidays = holidays.country_holidays(country, years=years)
-    df["is_holiday"] = df["date_day"].isin(country_holidays).astype(int)
+    # NOTE: compare on datetime.date — `holidays` is keyed by date objects,
+    # so matching Timestamps directly silently yields all-zeros.
+    df["is_holiday"] = df["date_day"].dt.date.isin(country_holidays).astype(int)
     return df
 
 

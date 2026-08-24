@@ -1,0 +1,16 @@
+section,metric,pymc,meridian,ratio
+Model quality,Holdout R²,0.5913,0.7786,1.317
+Model quality,Holdout WAPE (%),52.51,32.22,0.614
+Model quality,Holdout MAPE (%),80.32,41.92,0.522
+Model quality,Max R-hat,1.006,1.029,1.023
+Model quality,Divergences,0.0,60.0,inf
+Attribution,Google share (%),10.1,5.88,0.582
+Attribution,Meta share (%),10.26,1.1,0.107
+Attribution,Total paid share (%),20.36,6.98,0.343
+Efficiency,Google ROAS (purch/$),0.01333,0.00776,0.582
+Efficiency,Meta ROAS (purch/$),0.04396,0.00473,0.108
+Efficiency,Google revenue ROAS (x),2.43,1.41,0.58
+Efficiency,Meta revenue ROAS (x),8.0,0.86,0.108
+Optimisation,Optimal Google spend ($),110478.0,180300.0,1.632
+Optimisation,Optimal Meta spend ($),98246.0,28400.0,0.289
+Optimisation,Lift (%),30.81,1.18,0.038

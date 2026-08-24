@@ -1,0 +1,5 @@
+variant,channel,spend,purch_per_dollar,attr_purchases,share_pct,roi_revenue,holdout_r2,holdout_wape,max_rhat,divergences
+spend-exec,Google,159601.0,0.0098,1564.7,7.43,3.878,0.7305,36.84,1.0385,105
+spend-exec,Meta,49123.0,0.00715,351.2,1.67,2.906,0.7305,36.84,1.0385,105
+few-knots,Google,159601.0,0.00621,991.0,4.71,1.962,0.6234,49.14,1.0122,19
+few-knots,Meta,49123.0,0.00551,270.7,1.29,1.873,0.6234,49.14,1.0122,19
