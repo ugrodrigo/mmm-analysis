@@ -1,0 +1,32 @@
+2026-08-24 18:02:54,748 - robyn.robyn - INFO - Initialized Robyn in C:\Users\rodri\Documents\vscode\mmm-analysis\data\robyn_out
+2026-08-24 18:02:54,750 - robyn.robyn - INFO - Validating input data
+2026-08-24 18:02:54,776 - robyn.robyn - INFO - Data initialization complete
+2026-08-24 18:02:54,777 - robyn.robyn - INFO - Performing feature engineering
+2026-08-24 18:04:35,446 - robyn.robyn - INFO - Initialized Robyn in C:\Users\rodri\Documents\vscode\mmm-analysis\data\robyn_out
+2026-08-24 18:04:35,447 - robyn.robyn - INFO - Validating input data
+2026-08-24 18:04:35,515 - robyn.robyn - INFO - Data initialization complete
+2026-08-24 18:04:35,516 - robyn.robyn - INFO - Performing feature engineering
+2026-08-24 18:05:20,900 - robyn.robyn - INFO - Initialized Robyn in C:\Users\rodri\Documents\vscode\mmm-analysis\data\robyn_out
+2026-08-24 18:05:20,903 - robyn.robyn - INFO - Validating input data
+2026-08-24 18:05:20,934 - robyn.robyn - INFO - Data initialization complete
+2026-08-24 18:05:20,935 - robyn.robyn - INFO - Performing feature engineering
+2026-08-24 18:05:22,962 - robyn.robyn - INFO - Training models
+2026-08-24 18:05:33,074 - robyn.robyn - INFO - Evaluating models
+2026-08-24 18:05:33,168 - robyn.robyn - ERROR - Model evaluation failed: Less than 100 candidates in pareto fronts. Increase iterations to get more model candidates or decrease min_candidates.
+2026-08-24 18:06:06,928 - robyn.robyn - INFO - Initialized Robyn in C:\Users\rodri\Documents\vscode\mmm-analysis\data\robyn_out
+2026-08-24 18:06:06,930 - robyn.robyn - INFO - Validating input data
+2026-08-24 18:06:06,953 - robyn.robyn - INFO - Data initialization complete
+2026-08-24 18:06:06,953 - robyn.robyn - INFO - Performing feature engineering
+2026-08-24 18:06:07,622 - robyn.robyn - INFO - Training models
+2026-08-24 18:08:30,878 - robyn.robyn - INFO - Evaluating models
+2026-08-24 18:08:48,859 - robyn.robyn - ERROR - Model evaluation failed: 'dep_var'
+2026-08-24 18:10:58,397 - robyn.robyn - INFO - Initialized Robyn in C:\Users\rodri\Documents\vscode\mmm-analysis\data\robyn_out
+2026-08-24 18:10:58,398 - robyn.robyn - INFO - Validating input data
+2026-08-24 18:10:58,420 - robyn.robyn - INFO - Data initialization complete
+2026-08-24 18:10:58,421 - robyn.robyn - INFO - Performing feature engineering
+2026-08-24 18:10:59,028 - robyn.robyn - INFO - Training models
+2026-08-24 18:14:58,654 - robyn.robyn - INFO - Initialized Robyn in C:\Users\rodri\Documents\vscode\mmm-analysis\data\robyn_out
+2026-08-24 18:14:58,657 - robyn.robyn - INFO - Validating input data
+2026-08-24 18:14:58,683 - robyn.robyn - INFO - Data initialization complete
+2026-08-24 18:14:58,683 - robyn.robyn - INFO - Performing feature engineering
+2026-08-24 18:15:01,971 - robyn.robyn - INFO - Training models

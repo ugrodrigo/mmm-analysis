@@ -1,8 +1,9 @@
 """Lazy re-exports.
 
 Imports are deferred so the package can be used from an environment that has
-only one of the two modelling backends installed (PyMC-Marketing for
-``mmm.model``, Meridian/TensorFlow for ``mmm.meridian_model``).
+only one of the three modelling backends installed (PyMC-Marketing for
+``mmm.model``, Meridian/TensorFlow for ``mmm.meridian_model``,
+Robyn/rpy2 for ``mmm.robyn_model``).
 """
 
 import importlib
@@ -17,6 +18,8 @@ _EXPORTS = {
     "build_meridian_frame": "mmm.meridian_model",
     "load_input_data": "mmm.meridian_model",
     "build_model": "mmm.meridian_model",
+    "build_robyn_frame": "mmm.robyn_model",
+    "setup_r_env": "mmm.robyn_model",
 }
 
 __all__ = list(_EXPORTS)

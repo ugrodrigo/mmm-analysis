@@ -1,0 +1,15 @@
+section,metric,value
+Model Quality,Pareto solutions,130.0
+Model Quality,DECOMP.RSSD,0.0954
+Model Quality,NRMSE,0.0459
+Model Quality,Train R2,0.6702
+Attribution,Google purchases (attr.),1254.6
+Attribution,Google share (%),5.96
+Attribution,Google spend share (%),76.47
+Attribution,Google ROAS (purch/$),0.00806
+Attribution,Google ROI (revenue $/$),1.467
+Attribution,Meta purchases (attr.),581.9
+Attribution,Meta share (%),2.76
+Attribution,Meta spend share (%),23.53
+Attribution,Meta ROAS (purch/$),0.01219
+Attribution,Meta ROI (revenue $/$),2.218

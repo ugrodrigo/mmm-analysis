@@ -1,0 +1,246 @@
+Metadata-Version: 2.1
+Name: nevergrad
+Version: 1.0.12
+Summary: A Python toolbox for performing gradient-free optimization
+Home-page: https://github.com/facebookresearch/nevergrad
+Author: Facebook AI Research
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: Programming Language :: Python
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.24.0
+Requires-Dist: cma>=2.6.0
+Requires-Dist: bayesian-optimization==1.4.0
+Requires-Dist: typing-extensions>=3.6.6
+Requires-Dist: pandas
+Requires-Dist: directsearch
+Provides-Extra: all
+Requires-Dist: black==24.3.0; extra == "all"
+Requires-Dist: mypy>=0.800; extra == "all"
+Requires-Dist: pytest>=4.3.0; extra == "all"
+Requires-Dist: pytest-cov>=2.6.1; extra == "all"
+Requires-Dist: pylint>=2.4.4; extra == "all"
+Requires-Dist: wheel>=0.33.6; extra == "all"
+Requires-Dist: setuptools==70.0.0; extra == "all"
+Requires-Dist: sphinx>=3.3.0; extra == "all"
+Requires-Dist: sphinx-rtd-theme>=0.4.3; extra == "all"
+Requires-Dist: recommonmark>=0.5.0; extra == "all"
+Requires-Dist: twine>=3.1.1; extra == "all"
+Requires-Dist: autodocsumm>=0.1.11; extra == "all"
+Requires-Dist: pandas>=0.23.4; extra == "all"
+Requires-Dist: pyparsing>=2.2.1; extra == "all"
+Requires-Dist: docutils==0.17.1; extra == "all"
+Requires-Dist: requests>=2.21.0; extra == "all"
+Requires-Dist: smac>=2.0.1; extra == "all"
+Requires-Dist: scipy; extra == "all"
+Requires-Dist: scikit-optimize; extra == "all"
+Requires-Dist: xlwt>=1.3.0; extra == "all"
+Requires-Dist: xlrd>=1.2.0; extra == "all"
+Requires-Dist: opencv-python>=4.1.2.30; extra == "all"
+Requires-Dist: matplotlib==3.7.0; extra == "all"
+Requires-Dist: gym==0.24.1; extra == "all"
+Requires-Dist: pygame>=2.1.2; extra == "all"
+Requires-Dist: torch>=1.7.0; extra == "all"
+Requires-Dist: hiplot; extra == "all"
+Requires-Dist: fcmaes; extra == "all"
+Requires-Dist: openpyxl>=3.0.0; extra == "all"
+Requires-Dist: pyproj; extra == "all"
+Requires-Dist: Pillow>=10.3.0; extra == "all"
+Requires-Dist: tqdm; extra == "all"
+Requires-Dist: torchvision>=0.11.1; extra == "all"
+Requires-Dist: pyomo==5.7.1; extra == "all"
+Requires-Dist: mixsimulator>=0.3.3; extra == "all"
+Requires-Dist: hyperopt>=0.2.5; extra == "all"
+Requires-Dist: IOHexperimenter>=0.2.9.2; extra == "all"
+Requires-Dist: tensorflow-estimator>=2.7.0; extra == "all"
+Requires-Dist: tensorflow>=2.7.0; extra == "all"
+Requires-Dist: keras>=2.4.3; extra == "all"
+Requires-Dist: scikit-learn>=1.0.1; extra == "all"
+Requires-Dist: scikit-image>=0.18.3; extra == "all"
+Requires-Dist: image-quality>=1.2.7; extra == "all"
+Requires-Dist: pymoo==0.5.0; extra == "all"
+Requires-Dist: Keras-Preprocessing; extra == "all"
+Requires-Dist: silence-tensorflow; extra == "all"
+Requires-Dist: tensorflow-probability; extra == "all"
+Requires-Dist: bayes-optim; extra == "all"
+Requires-Dist: nlopt; extra == "all"
+Requires-Dist: pybullet>=3.2.2; extra == "all"
+Requires-Dist: glfw; extra == "all"
+Requires-Dist: mujoco; extra == "all"
+Requires-Dist: pySOT; extra == "all"
+Requires-Dist: pytest-timeout; extra == "all"
+Requires-Dist: pytest-xdist; extra == "all"
+Requires-Dist: poap; extra == "all"
+Requires-Dist: pytest-circleci-parallelized; extra == "all"
+Requires-Dist: Py-BOBYQA>=1.2; extra == "all"
+Requires-Dist: ax-platform; extra == "all"
+Requires-Dist: loguru; extra == "all"
+Requires-Dist: directsearch>=1.0; extra == "all"
+Requires-Dist: numpy>=1.16.2; extra == "all"
+Requires-Dist: scipy>=1.2.1; extra == "all"
+Requires-Dist: autograd>=1.2; extra == "all"
+Requires-Dist: scikit-image>=0.15.0; extra == "all"
+Requires-Dist: olymp>=0.0.1b0; sys_platform == "linux" and extra == "all"
+Provides-Extra: benchmark
+Requires-Dist: requests>=2.21.0; extra == "benchmark"
+Requires-Dist: smac>=2.0.1; extra == "benchmark"
+Requires-Dist: scipy; extra == "benchmark"
+Requires-Dist: scikit-optimize; extra == "benchmark"
+Requires-Dist: xlwt>=1.3.0; extra == "benchmark"
+Requires-Dist: xlrd>=1.2.0; extra == "benchmark"
+Requires-Dist: opencv-python>=4.1.2.30; extra == "benchmark"
+Requires-Dist: matplotlib==3.7.0; extra == "benchmark"
+Requires-Dist: gym==0.24.1; extra == "benchmark"
+Requires-Dist: pygame>=2.1.2; extra == "benchmark"
+Requires-Dist: torch>=1.7.0; extra == "benchmark"
+Requires-Dist: hiplot; extra == "benchmark"
+Requires-Dist: fcmaes; extra == "benchmark"
+Requires-Dist: pandas>=0.23.4; extra == "benchmark"
+Requires-Dist: openpyxl>=3.0.0; extra == "benchmark"
+Requires-Dist: pyproj; extra == "benchmark"
+Requires-Dist: Pillow>=10.3.0; extra == "benchmark"
+Requires-Dist: tqdm; extra == "benchmark"
+Requires-Dist: torchvision>=0.11.1; extra == "benchmark"
+Requires-Dist: pyomo==5.7.1; extra == "benchmark"
+Requires-Dist: mixsimulator>=0.3.3; extra == "benchmark"
+Requires-Dist: hyperopt>=0.2.5; extra == "benchmark"
+Requires-Dist: IOHexperimenter>=0.2.9.2; extra == "benchmark"
+Requires-Dist: tensorflow-estimator>=2.7.0; extra == "benchmark"
+Requires-Dist: tensorflow>=2.7.0; extra == "benchmark"
+Requires-Dist: keras>=2.4.3; extra == "benchmark"
+Requires-Dist: scikit-learn>=1.0.1; extra == "benchmark"
+Requires-Dist: scikit-image>=0.18.3; extra == "benchmark"
+Requires-Dist: image-quality>=1.2.7; extra == "benchmark"
+Requires-Dist: pymoo==0.5.0; extra == "benchmark"
+Requires-Dist: Keras-Preprocessing; extra == "benchmark"
+Requires-Dist: silence-tensorflow; extra == "benchmark"
+Requires-Dist: tensorflow-probability; extra == "benchmark"
+Requires-Dist: bayes-optim; extra == "benchmark"
+Requires-Dist: nlopt; extra == "benchmark"
+Requires-Dist: pybullet>=3.2.2; extra == "benchmark"
+Requires-Dist: glfw; extra == "benchmark"
+Requires-Dist: mujoco; extra == "benchmark"
+Requires-Dist: pySOT; extra == "benchmark"
+Requires-Dist: pytest-timeout; extra == "benchmark"
+Requires-Dist: pytest-xdist; extra == "benchmark"
+Requires-Dist: poap; extra == "benchmark"
+Requires-Dist: pytest-circleci-parallelized; extra == "benchmark"
+Requires-Dist: Py-BOBYQA>=1.2; extra == "benchmark"
+Requires-Dist: ax-platform; extra == "benchmark"
+Requires-Dist: loguru; extra == "benchmark"
+Requires-Dist: directsearch>=1.0; extra == "benchmark"
+Requires-Dist: numpy>=1.16.2; extra == "benchmark"
+Requires-Dist: scipy>=1.2.1; extra == "benchmark"
+Requires-Dist: autograd>=1.2; extra == "benchmark"
+Requires-Dist: scikit-image>=0.15.0; extra == "benchmark"
+Requires-Dist: olymp>=0.0.1b0; sys_platform == "linux" and extra == "benchmark"
+Provides-Extra: dev
+Requires-Dist: black==24.3.0; extra == "dev"
+Requires-Dist: mypy>=0.800; extra == "dev"
+Requires-Dist: pytest>=4.3.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.6.1; extra == "dev"
+Requires-Dist: pylint>=2.4.4; extra == "dev"
+Requires-Dist: wheel>=0.33.6; extra == "dev"
+Requires-Dist: setuptools==70.0.0; extra == "dev"
+Requires-Dist: sphinx>=3.3.0; extra == "dev"
+Requires-Dist: sphinx-rtd-theme>=0.4.3; extra == "dev"
+Requires-Dist: recommonmark>=0.5.0; extra == "dev"
+Requires-Dist: twine>=3.1.1; extra == "dev"
+Requires-Dist: autodocsumm>=0.1.11; extra == "dev"
+Requires-Dist: pandas>=0.23.4; extra == "dev"
+Requires-Dist: pyparsing>=2.2.1; extra == "dev"
+Requires-Dist: docutils==0.17.1; extra == "dev"
+
+[![Support Ukraine](https://img.shields.io/badge/Support-Ukraine-FFD500?style=flat&labelColor=005BBB)](https://opensource.fb.com/support-ukraine) [![CircleCI](https://circleci.com/gh/facebookresearch/nevergrad/tree/main.svg?style=svg)](https://circleci.com/gh/facebookresearch/nevergrad/tree/main)
+
+# Nevergrad - A gradient-free optimization platform
+
+![Nevergrad](https://raw.githubusercontent.com/facebookresearch/nevergrad/1.0.12/docs/resources/Nevergrad-LogoMark.png)
+
+
+`nevergrad` is a Python 3.8+ library. It can be installed with:
+
+```
+pip install nevergrad
+```
+
+More installation options, including windows installation, and complete instructions are available in the "Getting started" section of the [**documentation**](https://facebookresearch.github.io/nevergrad/).
+
+You can join Nevergrad users Facebook group [here](https://www.facebook.com/groups/nevergradusers/).
+
+Minimizing a function using an optimizer (here `NGOpt`) is straightforward:
+
+```python
+import nevergrad as ng
+
+def square(x):
+    return sum((x - .5)**2)
+
+optimizer = ng.optimizers.NGOpt(parametrization=2, budget=100)
+recommendation = optimizer.minimize(square)
+print(recommendation.value)  # recommended value
+>>> [0.49971112 0.5002944]
+```
+
+`nevergrad` can also support bounded continuous variables as well as discrete variables, and mixture of those.
+To do this, one can specify the input space:
+
+```python
+import nevergrad as ng
+
+def fake_training(learning_rate: float, batch_size: int, architecture: str) -> float:
+    # optimal for learning_rate=0.2, batch_size=4, architecture="conv"
+    return (learning_rate - 0.2)**2 + (batch_size - 4)**2 + (0 if architecture == "conv" else 10)
+
+# Instrumentation class is used for functions with multiple inputs
+# (positional and/or keywords)
+parametrization = ng.p.Instrumentation(
+    # a log-distributed scalar between 0.001 and 1.0
+    learning_rate=ng.p.Log(lower=0.001, upper=1.0),
+    # an integer from 1 to 12
+    batch_size=ng.p.Scalar(lower=1, upper=12).set_integer_casting(),
+    # either "conv" or "fc"
+    architecture=ng.p.Choice(["conv", "fc"])
+)
+
+optimizer = ng.optimizers.NGOpt(parametrization=parametrization, budget=100)
+recommendation = optimizer.minimize(fake_training)
+
+# show the recommended keyword arguments of the function
+print(recommendation.kwargs)
+>>> {'learning_rate': 0.1998, 'batch_size': 4, 'architecture': 'conv'}
+```
+
+Learn more on parametrization in the [**documentation**](https://facebookresearch.github.io/nevergrad/)!
+
+![Example of optimization](https://raw.githubusercontent.com/facebookresearch/nevergrad/1.0.12/docs/resources/TwoPointsDE.gif)
+
+*Convergence of a population of points to the minima with two-points DE.*
+
+
+## Documentation
+
+Check out our [**documentation**](https://facebookresearch.github.io/nevergrad/)! It's still a work in progress, so don't hesitate to submit issues and/or pull requests (PRs) to update it and make it clearer!
+The last version of our [**data**](https://drive.google.com/file/d/1p8d1bMCDlvWrDIMXP7fT9pJa1cgjH3NM/view?usp=sharing) and the last version of our [**PDF report**](https://tinyurl.com/dagstuhloid). 
+
+## Citing
+
+```bibtex
+@misc{nevergrad,
+    author = {J. Rapin and O. Teytaud},
+    title = {{Nevergrad - A gradient-free optimization platform}},
+    year = {2018},
+    publisher = {GitHub},
+    journal = {GitHub repository},
+    howpublished = {\url{https://GitHub.com/FacebookResearch/Nevergrad}},
+}
+```
+
+## License
+
+`nevergrad` is released under the MIT license. See [LICENSE](https://github.com/facebookresearch/nevergrad/blob/1.0.12/LICENSE) for additional details about it.
+See also our [Terms of Use](https://opensource.facebook.com/legal/terms) and [Privacy Policy](https://opensource.facebook.com/legal/privacy).

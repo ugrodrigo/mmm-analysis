@@ -3,22 +3,43 @@
 **Brand:** Beauty & Fitness / Hair Care · US · USD · timeseries `596eef7c71f933d820d0e485935d0e8f`
 **Written:** 2026-08-21
 **Sizing:** `scripts/incrementality_power.py` — every budget and duration below is derived from it
-**Context:** `scripts/diagnose_confounding.py`, plus the PyMC vs Meridian comparison
+**Context:** `scripts/diagnose_confounding.py`, plus the PyMC / Meridian / Robyn comparison
+**Updated:** 2026-08-25 — Meta Robyn added as a third framework
 
 ---
 
 ## Why we need to test in market
 
-Two MMMs fit to the same 509 days give opposite answers on which channel to fund:
+Three MMMs — spanning two Bayesian frameworks and one regularised-regression
+framework — fit to the same 509 days give three different answers on which channel to fund:
 
-| | PyMC-Marketing | Meridian |
-|---|---|---|
-| Google revenue ROAS | 2.43× | 1.41× |
-| Meta revenue ROAS | **8.00×** | **0.86×** |
-| Recommendation | Move budget → Meta | Move budget → Google |
+| | PyMC-Marketing | Meridian | Robyn |
+|---|---|---|---|
+| Method | Bayesian MCMC | Bayesian MCMC | Ridge + Nevergrad |
+| Assumption anchored on | coefficients | ROI | spend share |
+| Google revenue ROAS | 2.43× | 1.41× | 1.47× |
+| Meta revenue ROAS | **8.00×** | **0.86×** | **2.22×** |
+| Total paid contribution | 20.4% | 7.0% | 8.7% |
+| Recommendation | Move budget → Meta | Move budget → Google | Move budget → Meta |
 
-The disagreement is not a modelling artefact — refitting Meridian on spend instead of
-impressions, and with three different baseline settings, never restored PyMC's ranking.
+The disagreement is not a modelling artefact. Refitting Meridian on spend instead of
+impressions, and with three different baseline settings, never restored PyMC's ranking —
+and adding a third framework with a genuinely different estimator produced a **third
+answer rather than a tiebreak**. Each model's number traces to where that framework
+constrains media effects, not to the data.
+
+Robyn makes this unusually explicit. Its second objective, DECOMP.RSSD, pulls each
+channel's effect share toward its spend share, and it binds: among media only, Robyn splits
+effect **68.4% Google / 31.6% Meta** against a spend split of **76.5% / 23.5%**. The ROAS
+ratio it reports (1.51×) is exactly the ratio of those two deviations. More telling still,
+across its **130 Pareto-optimal solutions** Meta's ROAS spans **1.19× to 5.87×** and
+Google's **0.48× to 3.17×** — every one equally defensible on Robyn's own criteria. The
+method does not narrow the answer; a human choosing a solution does.
+
+Nor is "two of three rank Meta higher" a vote worth counting: PyMC and Robyn agree on
+direction for unrelated reasons — an unconstrained coefficient in one case, an 8-point
+effect-share drift in the other. Neither is evidence about incrementality.
+
 The cause is in the media plan itself:
 
 **Meta was never flighted in a way that permits measurement.** It ran as two long
@@ -34,6 +55,10 @@ campaigns, live for both Q4 peaks and dark through the entire summer trough:
 linear time: −0.675). No observational model can separate the two, and the estimate you get
 depends entirely on how flexible you let the baseline be — 8.00× with a stiff baseline,
 0.86× with a flexible one. **This is a media-plan problem and only in-market testing fixes it.**
+
+Three frameworks is where this line of work stops paying. A fourth model would produce a
+fourth answer for a fourth reason. **The budget for further modelling should be redirected
+to the tests below.**
 
 ---
 
@@ -55,7 +80,9 @@ ROAS floor of **6.6×**.
 | 12 weeks | 4.66× |
 
 So a naive holdout would refute PyMC's 8.00× and tell you nothing else. It could not
-distinguish 0.86× from 2.0× — which is the actual budget decision.
+separate Meridian's 0.86× from Robyn's 2.22× — and that 0.86×–2.22× band is precisely
+where the budget decision lives. The three models' own disagreement defines the resolution
+the test must achieve: **anything coarser than ~1.5× is not decision-grade.**
 
 **The fix is to scale up, not to hold out.** Required incremental spend in the treatment
 cell to resolve a given true ROAS over 6 weeks:
@@ -99,9 +126,10 @@ Google's Trimmed Match to get true cell-level variance.**
 **Question.** Does Meta deliver a ROAS above or below break-even, and is it anywhere near
 the 8.00× the current PyMC model claims?
 
-**Why first.** Largest model disagreement (9× apart), worst confounding, and the smaller of
-the two budgets — so it is the cheapest place to buy certainty. It is also the number
-currently driving a recommendation to move ~$49k into Meta.
+**Why first.** Largest model disagreement — 0.86×, 2.22× and 8.00× across the three
+frameworks, a 9× span — worst confounding, and the smaller of the two budgets, so it is the
+cheapest place to buy certainty. It is also the number driving a recommendation to move
+~$49k into Meta.
 
 **Design.**
 - Matched-market geo split, treatment vs control, assigned on pre-period purchase volume,
@@ -121,18 +149,24 @@ ROAS. Pre-register the analysis before launch.
 
 **Budget.** ~$15–20k incremental over the test window to resolve a 2.0× threshold.
 
-**Decision criteria.**
-- Incremental ROAS 90% interval **excludes 8.00×** → retire the PyMC allocation
-  recommendation; it is a seasonality artefact.
-- Interval **above break-even** → Meta is a real channel; feed the estimate into Meridian as a
-  calibrated ROI prior and re-run allocation.
+**Decision criteria.** The three modelled estimates give the test explicit hypotheses to
+falsify — pre-register these before launch:
+- Interval **excludes 8.00×** → retire the PyMC allocation recommendation; it is a
+  seasonality artefact. (Expected: 8.00× sits above the top of Robyn's entire Pareto front
+  and outside Meridian's prior interval, so this is the most likely outcome.)
+- Interval **above break-even** → Meta is a real channel, and Meridian's 0.86× is its prior
+  showing through. Feed the tested estimate in as a calibrated ROI prior and re-run allocation.
+- Interval **below break-even** → Robyn's 2.22× is spend-share anchoring, not measurement.
+  Cut Meta rather than holding flat.
 - Interval **spanning break-even** → Meta does not currently justify scale; hold budget flat
   and revisit with creative or audience changes rather than spend changes.
 
-**What it unlocks.** Meridian accepts a calibrated ROI prior directly. This is the input the
-model is missing — today its default `LogNormal(0.2, 0.9)` prior is supplying most of the
-Meta answer rather than the data. One lift test converts the MMM from an assumption
-restatement into a measurement.
+**What it unlocks.** Meridian accepts a calibrated ROI prior directly, and Robyn accepts
+experimental results as calibration input too. This is what all three models are missing:
+Meridian's default `LogNormal(0.2, 0.9)` prior is supplying most of its Meta answer, and
+Robyn's spend-share penalty is supplying most of its own. One lift test replaces both
+assumptions with a measurement, and collapses Robyn's 130-solution Pareto front to the
+subset consistent with the tested value.
 
 **Practical note.** Check whether the Meta account qualifies for **Meta Conversion Lift**
 first. Meta's own user-level randomisation is more powerful than a geo split at this budget
@@ -148,9 +182,11 @@ how much is demand that would have converted through organic or direct anyway?
 
 **Why.** PMax is the single largest line in the plan and the least transparent. It buys across
 Search, Shopping, Display and YouTube inventory with no channel-level control, and it is
-structurally prone to harvesting existing demand. Google's ROAS is the more stable of the two
-model estimates (2.43× vs 1.41×, a 1.7× spread rather than 9×), but "more stable" is not
-"validated" — and it is the larger budget at risk.
+structurally prone to harvesting existing demand. Google is the one place the three models
+roughly agree — 2.43×, 1.41× and 1.47×, a 1.7× spread against Meta's 9× — but agreement
+between three models that share the same confounded data is not validation, and Google is
+the larger budget at risk. Note also that Robyn's Google figure spans 0.48×–3.17× across its
+Pareto front, so even that apparent agreement is narrower than it looks.
 
 **Design.**
 - Google Ads **geo experiment** (native split-testing in the platform), or a matched-market
@@ -236,7 +272,8 @@ interval when the MMM is refitted on the new data.
 resulting decorrelated spend data permanently improves every subsequent MMM refresh.
 
 **Strategic note.** If only one thing on this list is adopted long-term, make it this. It is
-the difference between an MMM that measures and an MMM that assumes.
+the difference between an MMM that measures and an MMM that assumes — and the three-way
+disagreement documented above is what "an MMM that assumes" looks like in practice.
 
 ---
 
@@ -312,3 +349,11 @@ here so they are not lost:
   and `all_other` are clean.
 - **Meridian's headline fit has not converged** — R-hat 1.029, 60 divergences. The 8-knot
   variant is clean (1.012, 19). No number should be published from the unconverged fit.
+- **Robyn returns a front, not an answer** — 130 Pareto-optimal solutions, all equally valid
+  on its own criteria, spanning 1.19×–5.87× for Meta. The figures quoted here are front
+  medians. Any single-solution Robyn number quoted elsewhere should be treated as a choice,
+  not a result.
+- **`robynpy` 0.3.6 does not run as published** — it requires R + glmnet via rpy2, pins an
+  `rpy2` version with no Windows wheel, calls the pandas-3-removed `DataFrame.applymap`, and
+  crashes in `evaluate_models()` (`KeyError: 'dep_var'` in the plot-data generator). The
+  workarounds are documented in `scripts/run_robyn.py`; budget setup time if anyone re-runs it.
