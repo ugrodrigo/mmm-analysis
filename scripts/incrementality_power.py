@@ -48,6 +48,7 @@ def detrended_weekly_cv(s: pd.Series) -> float:
 def main():
     df = pd.read_csv(CLEAN, parse_dates=["date_day"]).sort_values("date_day")
     df["meta_on"] = df["total_meta_spend"] > 0
+    tr = df.iloc[:407]  # same 407-day train window the models used
 
     # ---- 1. find the stable window -------------------------------------
     rule("1. Candidate test windows")
@@ -151,26 +152,81 @@ def main():
     print("   Instead, SCALE UP the treatment cell. Required spend delta to detect a")
     print("   given true ROAS: delta >= MDE * cell_purchases * ASP / ROAS\n")
 
+    # The quantity the test needs is the CONTRAST between cells -- the spend in
+    # the treatment cell OVER AND ABOVE the control cell. That contrast is the
+    # incremental budget; the treatment cell's total is control + contrast.
+    recent_rate = df[df.date_day >= "2023-08-17"].total_meta_spend.mean()
     for n_weeks in (6, 12):
         mde = mdes[n_weeks][0]  # conservative
         days = n_weeks * 7
         cell_purch = daily_purch * 0.5 * days
-        cur_cell_spend = meta_daily * 0.5 * days
         print(f"   --- {n_weeks}-week test, 50/50 split, MDE {mde * 100:.1f}% ---")
-        print(f"   Current Meta spend in the cell: ${cur_cell_spend:,.0f} (${cur_cell_spend / days:,.0f}/day)")
-        print(f"   {'target ROAS':>12s} {'spend delta':>13s} {'x current':>10s} {'extra budget':>14s}")
+        print(
+            f"   {'target':>8s} {'contrast $':>12s} {'= extra':>10s}"
+            f" {'x current @$322':>16s} {'x current @$479':>16s}"
+        )
         for roas in (1.5, 2.0, 3.0, 4.0):
-            delta = mde * cell_purch * ASP / roas
+            contrast = mde * cell_purch * ASP / roas
+            mults = []
+            for rate in (meta_daily, recent_rate):
+                cur = rate * 0.5 * days
+                mults.append((cur + contrast) / cur)
             print(
-                f"   {roas:11.1f}x {delta:13,.0f} {delta / cur_cell_spend:9.1f}x "
-                f"{delta - cur_cell_spend:14,.0f}"
+                f"   {roas:7.1f}x {contrast:12,.0f} {contrast:10,.0f}"
+                f" {mults[0]:15.2f}x {mults[1]:15.2f}x"
             )
         print()
 
-    print("   Read: to learn whether Meta clears a 2x ROAS, the treatment cell must run")
-    print("   at roughly 3-4x its current Meta budget for 6 weeks. That is the real price")
-    print("   of a decision-grade answer -- roughly $15-20k of incremental spend, not the")
-    print("   $7k of 'forgone' spend a naive holdout would suggest.")
+    print("   Read: the incremental budget is the CONTRAST and does not depend on the")
+    print("   current run-rate -- roughly $22k over 6 weeks to resolve a 2.0x ROAS.")
+    print("   Only the multiple of current spend depends on the rate: ~4.3x if Meta")
+    print("   runs at $322/day, ~3.2x at its most recent $479/day.")
+
+    # ---- 7. E2: is a PMax holdout adequately powered? --------------------
+    rule("7. E2 — Google PMax holdout, is it powered at current spend?")
+    pmax_daily = tr["google_pmax_spend"].fillna(0).sum() / len(tr)
+    print(f"   PMax spend: ${pmax_daily:,.0f}/day (train window) = "
+          f"{pmax_daily / (tr['total_google_spend'].sum() / len(tr)) * 100:.0f}% of Google")
+    print(f"   For comparison, Meta when live: ${meta_daily:,.0f}/day\n")
+    print("   A holdout REDUCES spend in the treatment cell, so the contrast is")
+    print("   (cut %) x (cell's PMax spend). No incremental budget required.\n")
+    print(f"   {'weeks':>6s} {'cut':>6s} {'contrast $':>12s} {'ROAS floor':>12s}  verdict")
+    for n_weeks in (6, 8, 12):
+        mde = mdes[n_weeks][0]  # conservative
+        days = n_weeks * 7
+        cell_purch = daily_purch * 0.5 * days
+        for cut in (0.5, 0.7, 1.0):
+            contrast = pmax_daily * 0.5 * days * cut
+            floor = mde * cell_purch * ASP / contrast
+            verdict = (
+                "usable" if floor <= 2.0 else
+                "marginal" if floor <= 3.0 else "UNDERPOWERED"
+            )
+            print(f"   {n_weeks:6d} {cut:5.0%} {contrast:12,.0f} {floor:11.2f}x  {verdict}")
+
+    print("\n   Read: a PMax holdout is better powered than a Meta holdout, but at a")
+    print("   50% cut it is still not decision-grade. A full dark test over 8-12 weeks")
+    print("   is what reaches a usable resolution -- and that is a real revenue risk,")
+    print("   not the 'net negative cost' a partial cut implies.")
+
+    # ---- 8. Meta rate basis ---------------------------------------------
+    rule("8. Which Meta spend rate should size the test?")
+    recent = df[df.date_day >= "2023-08-17"]
+    bases = {
+        "full period, active days only": meta_daily,
+        "train window, active days only": tr[tr.meta_on].total_meta_spend.mean(),
+        "train window, all days": tr.total_meta_spend.mean(),
+        "most recent ON period (Aug-Dec 2023)": recent.total_meta_spend.mean(),
+    }
+    for label, v in bases.items():
+        print(f"   {label:38s} ${v:7,.0f}/day")
+    print(
+        "\n   Sections 4-6 use the full-period active-day rate. The most recent ON"
+        "\n   period is the better planning basis for a future test -- if it differs"
+        "\n   materially, rescale the required budgets by the ratio."
+    )
+    ratio = bases["most recent ON period (Aug-Dec 2023)"] / meta_daily
+    print(f"   Ratio vs the rate used: {ratio:.2f}x")
 
     print(
         "\n   CAVEAT: national-series approximation. Real cell-level variance depends on"

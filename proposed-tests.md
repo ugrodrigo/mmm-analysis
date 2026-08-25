@@ -84,19 +84,25 @@ separate Meridian's 0.86× from Robyn's 2.22× — and that 0.86×–2.22× band
 where the budget decision lives. The three models' own disagreement defines the resolution
 the test must achieve: **anything coarser than ~1.5× is not decision-grade.**
 
-**The fix is to scale up, not to hold out.** Required incremental spend in the treatment
-cell to resolve a given true ROAS over 6 weeks:
+**The fix is to scale up, not to hold out.** What the test needs is the **contrast** between
+cells — spend in the treatment cell over and above the control cell. That contrast *is* the incremental budget; the treatment cell's total
+is control + contrast. Over 6 weeks:
 
-| Target ROAS to resolve | Spend needed in cell | × current | Extra budget |
-|---|---|---|---|
-| 4.0× | $11,156 | 1.6× | $4,384 |
-| 3.0× | $14,875 | 2.2× | $8,103 |
-| **2.0×** | **$22,312** | **3.3×** | **$15,540** |
-| 1.5× | $29,749 | 4.4× | $22,977 |
+| Target ROAS to resolve | Contrast = incremental budget | Treatment cell × current |
+|---|---|---|
+| 4.0× | $11,156 | 2.1–2.7× |
+| 3.0× | $14,875 | 2.5–3.2× |
+| **2.0×** | **$22,312** | **3.2–4.3×** |
+| 1.5× | $29,749 | 4.0–5.4× |
 
-**A decision-grade answer on Meta costs roughly $15–20k of incremental spend, not the $7k of
+**A decision-grade answer on Meta costs roughly $22k of incremental spend, not the $7k of
 forgone spend a holdout implies.** That is the single most important number in this document,
 and it should be the basis of the budget conversation.
+
+The incremental budget does not depend on Meta's current run-rate — only the *multiple* does.
+The range above spans two bases: Meta's full-period active-day rate ($322/day) and its most
+recent ON period, Aug–Dec 2023 ($479/day). Confirm the current run-rate before committing,
+and read the multiple off the matching column.
 
 ---
 
@@ -147,7 +153,8 @@ seasonal confound the test exists to break. May–July is the flattest stretch (
 **Read-out.** Difference-in-differences on cell-level purchases, converted to incremental
 ROAS. Pre-register the analysis before launch.
 
-**Budget.** ~$15–20k incremental over the test window to resolve a 2.0× threshold.
+**Budget.** ~$22k incremental over the test window to resolve a 2.0× threshold; ~$15k if a
+3.0× threshold is acceptable.
 
 **Decision criteria.** The three modelled estimates give the test explicit hypotheses to
 falsify — pre-register these before launch:
@@ -194,9 +201,25 @@ Pareto front, so even that apparent agreement is narrower than it looks.
 - Reduce PMax budget by 50–70% in the treatment cell, hold everything else constant.
 - 6–8 weeks, same seasonal window rules as E1.
 
-**A holdout is the right shape here, unlike E1** — Google spends $460/day, materially more
-than Meta, so removing a large share of it produces a spend contrast big enough to measure
-without needing incremental budget.
+**Power warning — this test is harder than it looks.** The intuition that "Google is the
+bigger budget so a holdout will work" does not survive sizing. The test manipulates PMax,
+not all of Google, and PMax runs at **$300/day** — barely different from Meta's $322/day.
+Detectable ROAS floors for a 50/50 geo holdout:
+
+| Length | 50% cut | 70% cut | Full dark |
+|---|---|---|---|
+| 6 weeks | 14.15× | 10.11× | 7.08× |
+| 8 weeks | 12.25× | 8.75× | 6.13× |
+| 12 weeks | 10.01× | 7.15× | 5.00× |
+
+**None of these is decision-grade.** Even a 12-week full blackout only resolves 5.00×, well
+above the 1.4–2.4× range the models actually disagree over. A partial-cut PMax holdout is
+not a cheap win; it is a test that cannot answer the question.
+
+**Implication.** Either accept a longer/darker test than is comfortable, wait for geo-level
+data (E0) to cut the variance, or treat E2 as a *cannibalisation* study rather than a ROAS
+measurement — the organic-offset read-out below still works at lower power, because that
+effect is measured on organic traffic rather than on total purchases.
 
 **Read-out.** Incremental purchases, plus **cannibalisation check**: track organic search,
 branded search and direct clicks in both cells. If PMax is harvesting rather than creating
@@ -207,8 +230,9 @@ demand, the treatment cell's paid decline will be partly offset by an organic ri
 evidence *against* heavy brand cannibalisation, and it makes the test more likely to show
 genuine incrementality. Worth confirming rather than assuming.
 
-**Budget.** Net negative — you spend less during the test. The cost is forgone conversions in
-the treatment cell if PMax turns out to be highly incremental.
+**Budget.** Net negative in spend — you spend less during the test. But the real cost is
+forgone conversions in the treatment cell, and at the cut depths needed for adequate power
+that is a material revenue risk, not a free test.
 
 **Decision criteria.** If incremental ROAS lands materially below the modelled 2.43×, rebase
 the Google plan and re-run the optimiser with the tested value.
@@ -308,14 +332,17 @@ measure.
 | Day 1 | Request the promotion calendar (see caveat below) | $0 |
 | Weeks 1–2 | Re-run power in GeoLift/Trimmed Match on real geo data; pre-register E1 | $0 |
 | Weeks 3–4 | Check Meta Conversion Lift eligibility; design cells for E1 | $0 |
-| **Feb–Aug window** | **E1 — Meta scale-up geo test, 6–12 weeks** | **$15–20k** |
-| Same window, parallel geos | **E2 — PMax holdout, 6–8 weeks** | net negative |
+| **Feb–Aug window** | **E1 — Meta scale-up geo test, 6–12 weeks** | **~$22k** |
+| Same window, parallel geos | **E2 — PMax holdout, 8–12 weeks, deep cut** | net negative spend, real revenue risk |
 | Following quarter | E3 email × Meta, E4 always-on vs flighted | ~$0 |
 | After E1/E2 read out | Refit Meridian with calibrated ROI priors; re-run allocation | $0 |
 | Later | E5 sparse-channel triage | neutral |
 
-**Total incremental media budget for a decision-grade answer on both major channels:
-roughly $15–20k**, since E2 runs net-negative and offsets part of E1.
+**Total incremental media budget: roughly $22k**, all of it in E1. E2 spends less rather than
+more, so it adds no budget — but it carries a revenue risk at the cut depth its power
+requires, and on current sizing it cannot reach a decision-grade ROAS at all. Treat the $22k
+as buying an answer on **Meta only**; Google's answer is gated on geo-level data (E0)
+reducing the variance enough to make E2 viable.
 
 ---
 
